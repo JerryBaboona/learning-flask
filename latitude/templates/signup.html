@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <main class="container signup-section">
+    <div class="section-content">
+      <h2>Create an account</h2>
+
+      <!-- The action dictates what function is activated on submission. Here
+      we want to activate the signup view function in routes.py using a POST request -->
+      <form action="/signup" method="POST">
+        <!-- Use form variable to generate rest of form content -->
+        <!-- Hidden tag protects against CSRF attacks -->
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          {{ form.first_name.label }}
+
+          <!-- Get errors from form and loop through to display them -->
+          {% if form.first_name.errors %}
+            {% for error in form.first_name.errors %}
+              <p class="error-message">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+
+          <!-- Using required=False here stops the form using the HTML form attribute
+          "required". This attribute allows the form itself to validate fields
+          without sending a request to the server. The value of this
+          is that it decreases the number of server requests.
+
+          However, this also means that it is not possible to set custom validation
+          messages, and you're stuck with the default HTML ones (bar some fiddling
+          with Javascript API). So to enable custom messages we set required=False.-->
+          {{ form.first_name(required=False) }}
+        </div>
+
+        <div class="form-group">
+          {{ form.last_name.label }}
+
+          {% if form.last_name.errors %}
+            {% for error in form.last_name.errors %}
+              <p class="error-message">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+
+          {{ form.last_name(required=False) }}
+        </div>
+
+        <div class="form-group">
+          {{ form.email.label }}
+
+          {% if form.email.errors %}
+            {% for error in form.email.errors %}
+              <p class="error-message">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+
+          {{ form.email(required=False) }}
+        </div>
+
+        <div class="form-group">
+          {{ form.password.label }}
+
+          {% if form.password.errors %}
+            {% for error in form.password.errors %}
+              <p class="error-message">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+
+          {{ form.password(required=False) }}
+        </div>
+
+        {{ form.submit(class="btn-primary")}}
+      </form>
+    </div>
+  </main>
+{% endblock %}
