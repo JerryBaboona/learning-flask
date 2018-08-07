@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 from models import db, User
 from forms import SignupForm
 import pdb
@@ -41,12 +41,21 @@ def signup():
             # Add user to the database
             db.session.add(newuser)
             db.session.commit()
-            return "Success"
+
+            # Create a session for that user - use email as ID for session
+            session["email"] = newuser.email
+
+            # Redirect to the home page
+            return redirect(url_for("home"))
 
     # GET request --> user is requesting the signup page
     elif request.method == "GET":
         # Send the form as an argument in render_template
         return render_template("signup.html", form=form)
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
